@@ -27,7 +27,10 @@ endif()
 add_executable(${PROJECT_NAME} main.cpp
         Game.h
         Game.cpp
-        Game.h
+        Racket.cpp
+        Racket.h
+        Brick.cpp
+        Brick.h
 )
 #set(raylib_VERBOSE 1)
 target_link_libraries(${PROJECT_NAME} raylib)

@@ -1,13 +1,25 @@
 ﻿//
 // Created by c.barrera on 25/11/2025.
 //
-//
-// Created by c.barrera on 25/11/2025.
-//
 #include <iostream>
 #include<raylib.h>
 #include <vector>
 #include "Game.h"
+
+#include "Brick.h"
+#include "Racket.h"
+#include "Brick.h"
+
+Game::Game() {
+    _camera = {0};
+    _camera.target = (Vector2){0,0};
+    _camera.offset = (Vector2){1600/2.0f, 900/2.0f}; // choix de la position d'origine
+    _camera.rotation = 0;
+    _camera.zoom = 1;
+    _score = 0;
+
+}
+
 
 void Game::Init() {
     /**
@@ -19,7 +31,8 @@ void Game::Init() {
 void Game::Run() {
     Init();
     //Init
-
+    Racket racket = Racket({0,200}, {50,10},  100, DARKGREEN);
+    _camera.target = racket.Position;
 
     //GameLoop
     while (!WindowShouldClose()) {
@@ -27,7 +40,7 @@ void Game::Run() {
         //GetFrameTime(); // delta time qui évite la variation du temps en fonction de la puissance machine
 
         //Update
-
+        racket.Mouvements();
 
         //Render
 
@@ -37,6 +50,7 @@ void Game::Run() {
             BeginMode2D(_camera);
             //DrawGameplay
                 //Fonction de rendu
+                racket.Display();
 
             EndMode2D();
         EndDrawing();

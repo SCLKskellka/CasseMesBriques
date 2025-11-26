@@ -11,10 +11,10 @@
 class BrickGrid {
 public:
     BrickGrid(Vector2 gridPosition, Vector2 gridSize, int rowBrickQtt, int colBrickQtt, int padding);
+    BrickGrid(Vector2 gridPosition, Vector2 gridSize);
     ~BrickGrid() = default;
     void Display();
     bool IsGridCleared();
-    //Brick GetBrick(int x, int y);
 
     std::vector<std::vector<Brick>> Grid;
 private:

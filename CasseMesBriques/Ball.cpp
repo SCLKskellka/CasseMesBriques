@@ -28,6 +28,10 @@ Vector2 Ball::getDirection() const {
     return _ballDirection;
 }
 
+void Ball::setDirection(Vector2 direction) {
+    _ballDirection = direction;
+}
+
 void Ball::update(float deltaTime) {
     _ballPosition.x += _ballDirection.x * _velocity * deltaTime;
     _ballPosition.y += _ballDirection.y * _velocity * deltaTime;

@@ -18,28 +18,6 @@ Game::Game() {
     _score = 0;
 }
 
-//A ajouter dans la racket ?
-Vector2 GetRacketCollisionNormal(Rectangle racketRect, Vector2 ballCenter) {
-
-    float sectionWidth = racketRect.width / 3.0f;
-    float leftSectionEnd = racketRect.x + sectionWidth;
-    float middleSectionEnd = racketRect.x + 2 * sectionWidth;
-
-    if (ballCenter.x < leftSectionEnd) {
-        return Vector2Normalize({-0.7f, -1.0f});
-    }
-    else if (ballCenter.x < middleSectionEnd) {
-        return Vector2Normalize({0.0f, -1.0f});
-    }
-    else {
-        return Vector2Normalize({0.7f, -1.0f});
-    }
-
-}
-
-
-
-
 void Game::Init() {
     /**
      *Ouverture de la fenêtre de jeu
@@ -50,36 +28,37 @@ void Game::Init() {
 
 void Game::Run() {
     Init();
-    //Init
-    Racket racket = Racket({0,200}, {100,20},  400, DARKGREEN);
+    Racket racket = Racket({0, 200}, {100, 20}, 400, DARKGREEN);
     _camera.target = racket.Position;
-
     Ball _ball = Ball({0, 0}, {0.0f, 1.0f}, 250);
-
     Rectangle topWall = {-790, -250, 1600, 10};
     Rectangle leftWall = {-800, -250, 10, 900};
     Rectangle rightWall = {790, -250, 10, 900};
 
-    //GameLoop
     while (!WindowShouldClose()) {
         ClearBackground(RAYWHITE);
-        //GetFrameTime(); // delta time qui évite la variation du temps en fonction de la puissance machine
 
-        //Update
+        // Update
         racket.Mouvements();
         _ball.update(GetFrameTime());
-
         Vector2 ballPos = _ball.getPosition();
         Rectangle ballRect = {ballPos.x - 10, ballPos.y - 10, 20, 20};
-
         Rectangle racketRect = {racket.Position.x, racket.Position.y, 100, 20};
 
         if (CheckCollisionRecs(ballRect, racketRect)) {
-            //Vector2 collisionNormal = {0.0f, -1.0f};
-            //_ball.impact(collisionNormal);
+            float sectionWidth = racketRect.width / 3.0f;
+            float leftSectionEnd = racketRect.x + sectionWidth;
+            float middleSectionEnd = racketRect.x + 2 * sectionWidth;
 
-            Vector2 collisionNormal = GetRacketCollisionNormal(racketRect, ballPos);
-            _ball.impact(collisionNormal);
+            if (ballPos.x < leftSectionEnd) {
+                _ball.setDirection(Vector2Normalize({-0.7f, -1.0f}));
+            }
+            else if (ballPos.x < middleSectionEnd) {
+                _ball.setDirection(Vector2Normalize({0.0f, -1.0f}));
+            }
+            else {
+                _ball.setDirection(Vector2Normalize({0.7f, -1.0f}));
+            }
         }
 
         if (CheckCollisionRecs(ballRect, topWall)) {
@@ -95,25 +74,16 @@ void Game::Run() {
             _ball.impact(collisionNormal);
         }
 
-        //Render
-
+        // Render
         BeginDrawing();
-        //DrawUI
             BeginMode2D(_camera);
-            //DrawGameplay
-
                 DrawRectangleRec(topWall, BLACK);
                 DrawRectangleRec(leftWall, BLACK);
                 DrawRectangleRec(rightWall, BLACK);
-
-                //Fonction de rendu
                 racket.Display();
-
-                DrawCircleV(_ball.getPosition(), 10, RED);
-
+                DrawCircleV(ballPos, 10, RED);
             EndMode2D();
         EndDrawing();
     }
-    CloseWindow();//toujours penser à fermer les fenêtre , elle se détruisent pas automatiquement
-
+    CloseWindow();
 }

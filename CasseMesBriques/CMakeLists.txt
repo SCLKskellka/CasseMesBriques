@@ -33,6 +33,8 @@ add_executable(${PROJECT_NAME} main.cpp
         Racket.h
         Brick.cpp
         Brick.h
+        BrickGrid.cpp
+        BrickGrid.h
 )
 #set(raylib_VERBOSE 1)
 target_link_libraries(${PROJECT_NAME} raylib)

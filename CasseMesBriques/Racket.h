@@ -10,6 +10,7 @@ public:
     Racket(Vector2 position, Vector2 size, float speed, Color color);
     ~Racket() = default;
     void Display();
+    void Mouvements();
 
     Vector2 Position;
     Vector2 Size;

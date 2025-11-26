@@ -8,10 +8,12 @@
 class Brick {
 public:
     Brick(Vector2 position, Vector2 size, Color color, int hp);
-    ~Brick();
+    ~Brick() = default;
     void Display();
+    void GetDamage(int damage);
 
     Vector2 Position;
     Vector2 Size;
     Color MyColor;
+    int HP;
 };

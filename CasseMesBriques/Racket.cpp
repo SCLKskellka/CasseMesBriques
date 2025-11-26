@@ -15,3 +15,12 @@ void Racket::Display() {
     DrawRectangle(Position.x, Position.y,Size.x,Size.y,MyColor);
 }
 
+void Racket::Mouvements() {
+    if (IsKeyDown(KEY_RIGHT)) {
+        Position.x += Speed * GetFrameTime();
+    }
+    else if (IsKeyDown(KEY_LEFT)) {
+        Position.x -= Speed * GetFrameTime();
+    }
+}
+

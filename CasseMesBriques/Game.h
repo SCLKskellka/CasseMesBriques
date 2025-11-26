@@ -7,12 +7,12 @@
 
 class Game {
 public:
-    Game() = default;
+    Game();
     ~Game() = default;
     void Run();
+    void IncreaseScore(int value);
 private:
-    Camera2D _camera = {0};
-    int _speed;
-    int _score = 0;
     void Init();
+    Camera2D _camera = {0};
+    int _score = 0;
 };

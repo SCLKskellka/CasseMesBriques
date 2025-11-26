@@ -1,7 +1,4 @@
-﻿//
-// Created by c.barrera on 25/11/2025.
-//
-#include <iostream>
+﻿#include <iostream>
 #include<raylib.h>
 #include <vector>
 #include "Game.h"
@@ -17,7 +14,6 @@ Game::Game() {
     _camera.rotation = 0;
     _camera.zoom = 1;
     _score = 0;
-
 }
 
 
@@ -32,7 +28,7 @@ void Game::Run() {
     Init();
     //Init
     Racket racket = Racket({0,200}, {50,10},  100, DARKGREEN);
-    _camera.target = racket.Position;
+    _camera.target = {racket.Position.x,racket.Position.y - 200};
 
     //GameLoop
     while (!WindowShouldClose()) {
@@ -46,12 +42,11 @@ void Game::Run() {
 
         BeginDrawing();
         //DrawUI
-
             BeginMode2D(_camera);
             //DrawGameplay
                 //Fonction de rendu
                 racket.Display();
-
+                brick.Display();
             EndMode2D();
         EndDrawing();
     }

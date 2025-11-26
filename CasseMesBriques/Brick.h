@@ -16,4 +16,7 @@ public:
     Vector2 Size;
     Color MyColor;
     int HP;
+private:
+    int _maxHP;
+    bool _isDead;
 };

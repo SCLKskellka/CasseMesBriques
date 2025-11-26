@@ -10,8 +10,12 @@ class Game {
 public:
     Game();
     ~Game() = default;
+
+    int PlayerLife;
+
     void Run();
     void IncreaseScore(int value);
+    void CheckLoss();
 
 private:
     void Init();

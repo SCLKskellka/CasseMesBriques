@@ -17,6 +17,8 @@ Game::Game() {
     _camera.rotation = 0;
     _camera.zoom = 1;
     _score = 0;
+
+
 }
 
 void Game::Init() {
@@ -24,13 +26,26 @@ void Game::Init() {
      *Ouverture de la fenêtre de jeu
      **/
     InitWindow(1600,900,"CustomSnake");
+    PlayerLife = 3;
 
 }
+
+void Game::CheckLoss() {
+
+    PlayerLife -= 1;
+    if (PlayerLife > 0) {
+        _ball = Ball({0, 0}, {0.0f, 1.0f}, 250);
+    }
+    else {
+        DrawText(TextFormat("Defeat"), 400, 400, 40, BLACK);
+    }
+}
+
 
 void Game::Run() {
     Init();
     //Init
-    Racket racket = Racket({0,200}, {50,10},  100, DARKGREEN);
+    Racket racket = Racket({0,200}, {100,20},  400, DARKGREEN);
     _camera.target = {racket.Position.x,racket.Position.y - 200};
     //BrickGrid brickGrid = BrickGrid({0,0},{800,600}, 1, 1,0);
     Brick bricktest= Brick({0,-200},{99,19},RED, 1);
@@ -43,7 +58,6 @@ void Game::Run() {
     // Brick bricktest7= Brick({0,0},{99,19},GREEN, 1);
     // Brick bricktest8= Brick({0,0},{99,19},GREEN, 1);
     // Brick bricktest9= Brick({0,0},{99,19},GREEN, 1);
-    Racket racket = Racket({0,200}, {100,20},  400, DARKGREEN);
     _camera.target = racket.Position;
     Ball _ball = Ball({0, 0}, {0.0f, 1.0f}, 250);
     Rectangle topWall = {-790, -250, 1600, 10};
@@ -87,6 +101,10 @@ void Game::Run() {
         else if (CheckCollisionRecs(ballRect, rightWall)) {
             Vector2 collisionNormal = {-1.0f, 0.0f};
             _ball.impact(collisionNormal);
+        }
+
+        if (ballPos.y > 650) {
+            CheckLoss();
         }
 
         // Render

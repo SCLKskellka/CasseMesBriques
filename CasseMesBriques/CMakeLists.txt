@@ -27,6 +27,8 @@ endif()
 add_executable(${PROJECT_NAME} main.cpp
         Game.h
         Game.cpp
+        Ball.cpp
+        Ball.h
         Racket.cpp
         Racket.h
         Brick.cpp

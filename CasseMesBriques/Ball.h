@@ -12,6 +12,8 @@
 class Ball {
 
 public:
+
+    Ball() = default;
     Ball(Vector2 _pos, Vector2 _vel, int velocity);
 
     Vector2 impact(Vector2 targetNormal);

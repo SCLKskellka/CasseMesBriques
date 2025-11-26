@@ -46,7 +46,6 @@ void Game::Run() {
             //DrawGameplay
                 //Fonction de rendu
                 racket.Display();
-                brick.Display();
             EndMode2D();
         EndDrawing();
     }

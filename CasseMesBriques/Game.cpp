@@ -6,6 +6,7 @@
 #include "Brick.h"
 #include "Racket.h"
 #include "Brick.h"
+#include "BrickGrid.h"
 #include "Ball.h"
 #include "raymath.h"
 
@@ -28,7 +29,21 @@ void Game::Init() {
 
 void Game::Run() {
     Init();
-    Racket racket = Racket({0, 200}, {100, 20}, 400, DARKGREEN);
+    //Init
+    Racket racket = Racket({0,200}, {50,10},  100, DARKGREEN);
+    _camera.target = {racket.Position.x,racket.Position.y - 200};
+    //BrickGrid brickGrid = BrickGrid({0,0},{800,600}, 1, 1,0);
+    Brick bricktest= Brick({0,-200},{99,19},RED, 1);
+    Brick bricktest1= Brick({200,-200},{99,19},RED, 1);
+    Brick bricktest2= Brick({300,-200},{99,19},RED, 1);
+    Brick bricktest3= Brick({100,-200},{99,19},RED, 1);
+    Brick bricktest4= Brick({-100,-200},{99,19},RED, 1);
+    Brick bricktest5= Brick({-200,-200},{99,19},RED, 1);
+    Brick bricktest6= Brick({-300,-200},{99,19},RED, 1);
+    // Brick bricktest7= Brick({0,0},{99,19},GREEN, 1);
+    // Brick bricktest8= Brick({0,0},{99,19},GREEN, 1);
+    // Brick bricktest9= Brick({0,0},{99,19},GREEN, 1);
+    Racket racket = Racket({0,200}, {100,20},  400, DARKGREEN);
     _camera.target = racket.Position;
     Ball _ball = Ball({0, 0}, {0.0f, 1.0f}, 250);
     Rectangle topWall = {-790, -250, 1600, 10};
@@ -81,7 +96,17 @@ void Game::Run() {
                 DrawRectangleRec(leftWall, BLACK);
                 DrawRectangleRec(rightWall, BLACK);
                 racket.Display();
-                DrawCircleV(ballPos, 10, RED);
+                bricktest.Display();
+                bricktest1.Display();
+                bricktest2.Display();
+                bricktest3.Display();
+                bricktest4.Display();
+                bricktest5.Display();
+                bricktest6.Display();
+                //brickGrid.Display();
+
+                DrawCircleV(_ball.getPosition(), 10, RED);
+
             EndMode2D();
         EndDrawing();
     }

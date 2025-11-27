@@ -21,6 +21,8 @@ public:
     Vector2 getPosition() const;
     Vector2 getDirection() const;
 
+    void setDirection(Vector2 direction);
+
     void update(float deltaTime);
 
 private:

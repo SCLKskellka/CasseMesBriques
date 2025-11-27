@@ -11,7 +11,10 @@ public:
     ~Brick() = default;
     void Display();
     void GetDamage(int damage);
+    void GenerateCollisionRect();
+    // TO-DO : Generate rectangle to collide.
 
+    Rectangle RectCollision;
     Vector2 Position;
     Vector2 Size;
     Color MyColor;

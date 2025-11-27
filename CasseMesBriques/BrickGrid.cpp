@@ -13,9 +13,10 @@ BrickGrid::BrickGrid(Vector2 gridPosition, Vector2 gridSize, int rowBrickQtt, in
     _rowBrickQtt = rowBrickQtt;
     _colBrickQtt = colBrickQtt;
     _padding = padding;
-    std::vector<Brick> tmp;
+
     Vector2 brickSize = BrickSizeCalculation();
     for (int i = 0; i < _rowBrickQtt; i++) {
+        std::vector<Brick> tmp;
         for (int j =0; j < _colBrickQtt; j++) {
             Brick newbrick = Brick(
     {BrickPositionCalculation(i,j,brickSize).x,
@@ -23,7 +24,7 @@ BrickGrid::BrickGrid(Vector2 gridPosition, Vector2 gridSize, int rowBrickQtt, in
         {brickSize.x,brickSize.y},RED,3);
             tmp.push_back(newbrick);
         }
-        Grid.push_back(std::vector<Brick>());
+        Grid.push_back(tmp);
     }
 }
 
@@ -34,11 +35,11 @@ Vector2 BrickGrid::BrickSizeCalculation() {
 
 Vector2 BrickGrid::BrickPositionCalculation(int rowIndex, int colIndex, Vector2 brickSize) {
     /*
-     * ( positionGrid + GridSize / qttbrick ) * ( 1 + index )
+     * ( positionGrid + GridSize) / qttbrick * index
      */
     Vector2 brickposition = {
-        (_gridPosition.x + _gridSize.x / _rowBrickQtt) * (1 + rowIndex),
-        (_gridPosition.y + _gridSize.y / _colBrickQtt) * (1 + colIndex)
+        _gridSize.x  / _rowBrickQtt * rowIndex + _gridPosition.x,
+        _gridSize.y / _colBrickQtt * colIndex + _gridPosition.y
     };
     return brickposition;
 }

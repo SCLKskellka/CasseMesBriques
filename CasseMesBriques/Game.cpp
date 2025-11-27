@@ -5,7 +5,6 @@
 
 #include "Brick.h"
 #include "Racket.h"
-#include "Brick.h"
 #include "BrickGrid.h"
 #include "Ball.h"
 #include "raymath.h"
@@ -45,8 +44,16 @@ void Game::CheckLoss() {
 void Game::Run() {
     Init();
     //Init
-    Racket racket = Racket({0,200}, {100,20},  400, DARKGREEN);
+    Racket racket = Racket({0,200}, {100,20},  250, DARKGREEN);
     _camera.target = {racket.Position.x,racket.Position.y - 200};
+
+    BrickGrid grid = BrickGrid({-700,-350},{1400,400},10,5,1);
+
+    Ball _ball = Ball({0, 0}, {0.0f, 1.0f}, 250);
+
+    Rectangle topWall = {-790, -450, 1600, 10};
+    Rectangle leftWall = {-800, -450, 10, 900};
+    Rectangle rightWall = {790, -450, 10, 900};
     //BrickGrid brickGrid = BrickGrid({0,0},{800,600}, 1, 1,0);
     Brick bricktest= Brick({0,-200},{99,19},RED, 1);
     Brick bricktest1= Brick({200,-200},{99,19},RED, 1);
@@ -114,14 +121,7 @@ void Game::Run() {
                 DrawRectangleRec(leftWall, BLACK);
                 DrawRectangleRec(rightWall, BLACK);
                 racket.Display();
-                bricktest.Display();
-                bricktest1.Display();
-                bricktest2.Display();
-                bricktest3.Display();
-                bricktest4.Display();
-                bricktest5.Display();
-                bricktest6.Display();
-                //brickGrid.Display();
+                grid.Display();
 
                 DrawCircleV(_ball.getPosition(), 10, RED);
 

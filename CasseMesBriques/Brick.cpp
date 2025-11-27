@@ -11,6 +11,7 @@ Brick::Brick(Vector2 position, Vector2 size, Color color, int hp) {
     HP = hp;
     _maxHP = hp;
     _isDead = false;
+    GenerateCollisionRect();
 }
 
 void Brick::Display() {
@@ -30,5 +31,8 @@ void Brick::GetDamage(int damage) {
         HP = 0;
         _isDead = true;
     }
+}
+void Brick::GenerateCollisionRect() {
+    RectCollision = {Position.x,Position.y,Size.x,Size.y};
 }
 

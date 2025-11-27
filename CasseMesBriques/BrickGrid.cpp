@@ -35,11 +35,11 @@ Vector2 BrickGrid::BrickSizeCalculation() {
 
 Vector2 BrickGrid::BrickPositionCalculation(int rowIndex, int colIndex, Vector2 brickSize) {
     /*
-     * ( positionGrid + GridSize / qttbrick ) + ( positionGrid + GridSize / qttbrick * index )
+     * ( positionGrid + GridSize) / qttbrick * index
      */
     Vector2 brickposition = {
-        (_gridPosition.x + _gridSize.x / _rowBrickQtt) + ((_gridPosition.x + _gridSize.x / _rowBrickQtt)* rowIndex),
-        (_gridPosition.y + _gridSize.y / _colBrickQtt) + ((_gridPosition.x + _gridSize.x / _rowBrickQtt)* colIndex)
+        _gridSize.x  / _rowBrickQtt * rowIndex + _gridPosition.x,
+        _gridSize.y / _colBrickQtt * colIndex + _gridPosition.y
     };
     return brickposition;
 }

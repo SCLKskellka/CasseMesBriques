@@ -54,7 +54,7 @@ void Game::Run() {
     Racket racket = Racket({0,200}, {100,20},  250, DARKGREEN);
     _camera.target = {racket.Position.x,racket.Position.y - 200};
 
-    BrickGrid grid = BrickGrid({-500,-100},{1800,600},4,5,500);
+    BrickGrid grid = BrickGrid({-700,-350},{1400,400},10,5,1);
 
     Ball _ball = Ball({0, 0}, {0.0f, 1.0f}, 250);
 

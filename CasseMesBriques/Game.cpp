@@ -36,7 +36,7 @@ void Game::CheckLoss() {
         _ball = Ball({0, 0}, {0.0f, 1.0f}, 250);
     }
     else {
-        DrawText(TextFormat("Defeat"), 400, 400, 40, BLACK);
+        DrawText(TextFormat("Defeat"), 100, 800, 40, BLACK);
     }
 }
 
@@ -54,22 +54,6 @@ void Game::Run() {
     Rectangle topWall = {-790, -450, 1600, 10};
     Rectangle leftWall = {-800, -450, 10, 900};
     Rectangle rightWall = {790, -450, 10, 900};
-    //BrickGrid brickGrid = BrickGrid({0,0},{800,600}, 1, 1,0);
-    Brick bricktest= Brick({0,-200},{99,19},RED, 1);
-    Brick bricktest1= Brick({200,-200},{99,19},RED, 1);
-    Brick bricktest2= Brick({300,-200},{99,19},RED, 1);
-    Brick bricktest3= Brick({100,-200},{99,19},RED, 1);
-    Brick bricktest4= Brick({-100,-200},{99,19},RED, 1);
-    Brick bricktest5= Brick({-200,-200},{99,19},RED, 1);
-    Brick bricktest6= Brick({-300,-200},{99,19},RED, 1);
-    // Brick bricktest7= Brick({0,0},{99,19},GREEN, 1);
-    // Brick bricktest8= Brick({0,0},{99,19},GREEN, 1);
-    // Brick bricktest9= Brick({0,0},{99,19},GREEN, 1);
-    _camera.target = racket.Position;
-    Ball _ball = Ball({0, 0}, {0.0f, 1.0f}, 250);
-    Rectangle topWall = {-790, -250, 1600, 10};
-    Rectangle leftWall = {-800, -250, 10, 900};
-    Rectangle rightWall = {790, -250, 10, 900};
 
     while (!WindowShouldClose()) {
         ClearBackground(RAYWHITE);
@@ -108,6 +92,16 @@ void Game::Run() {
         else if (CheckCollisionRecs(ballRect, rightWall)) {
             Vector2 collisionNormal = {-1.0f, 0.0f};
             _ball.impact(collisionNormal);
+        }
+
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 5; j++) {
+                if (CheckCollisionRecs(ballRect, grid.Grid[i][j].RectCollision)) {
+                    Vector2 collisionNormal = {0.0f, 1.0f};
+                    _ball.impact(collisionNormal);
+                    grid.Grid[i][j].GetDamage(1);
+                }
+            }
         }
 
         if (ballPos.y > 650) {

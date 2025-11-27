@@ -21,6 +21,16 @@ Game::Game() {
 
 void Game::Init() {
     InitWindow(1600, 900, "CustomSnake");
+
+    InitAudioDevice();
+
+
+
+    fxRacketOne = LoadSound("/Resources/BrickBreaker_RacketImpact_00.wav");
+    if (fxRacketOne.stream.buffer == nullptr) {
+        std::cerr << "Failed to load fxRacketOne!" << std::endl;
+    }
+    fxRacketTwo = LoadSound("/Resources/BrickBreaker_RacketImpact_01.wav");
 }
 
 void Game::CheckLoss() {
@@ -75,6 +85,8 @@ void Game::Run() {
             else {
                 _ball.setDirection(Vector2Normalize({0.7f, -1.0f}));
             }
+
+            PlaySound(fxRacketOne);
         }
 
         if (CheckCollisionRecs(ballRect, topWall)) {
@@ -132,4 +144,7 @@ void Game::Run() {
         EndDrawing();
     }
     CloseWindow();
+
+    UnloadSound(fxRacketOne);
+    UnloadSound(fxRacketTwo);
 }

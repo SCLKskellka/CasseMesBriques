@@ -42,11 +42,14 @@ void Game::Run() {
 
     BrickGrid grid = BrickGrid({-700,-350},{1400,400},20,10,2);
 
-    Ball _ball = Ball({0, 0}, {0.0f, 1.0f}, 250);
-
     Rectangle topWall = {-790, -450, 1600, 10};
     Rectangle leftWall = {-800, -450, 10, 900};
     Rectangle rightWall = {790, -450, 10, 900};
+
+    float shakeDuration = 0.5f;
+    float shakeStrength = 5.0f;
+    float shakeTimer = 0.0f;
+    Vector2 originalCameraTarget = _camera.target;
 
     while (!WindowShouldClose()) {
         ClearBackground(RAYWHITE);
@@ -97,8 +100,19 @@ void Game::Run() {
             }
         }
 
+        if (shakeTimer > 0.0f) {
+            shakeTimer -= GetFrameTime();
+            float shakeOffsetX = (rand() % 100 - 50) / 100.0f * shakeStrength;
+            float shakeOffsetY = (rand() % 100 - 50) / 100.0f * shakeStrength;
+            _camera.target.x = originalCameraTarget.x + shakeOffsetX;
+            _camera.target.y = originalCameraTarget.y + shakeOffsetY;
+        } else {
+            _camera.target = originalCameraTarget;
+        }
+
         if (ballPos.y > 650 && !_ballOut) {
             CheckLoss();
+            shakeTimer = shakeDuration;
         }
 
         // Render

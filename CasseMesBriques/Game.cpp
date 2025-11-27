@@ -51,7 +51,7 @@ void Game::Run() {
     Rectangle rightWall = {790, -450, 10, 900};
 
     Rectangle playButton = { _screenWidth/2.0f-200,_screenHeight/2.0f-200, 400, 300};
-    Rectangle menuButton = { _screenWidth/2.0f-200,_screenHeight/2.0f-200, 400, 300};
+    Rectangle menuButton = { _screenWidth/2.0f-200,_screenHeight/2.0f-200, 600, 300};
 
     int btnState = 0;               // Button state: 0-NORMAL, 1-MOUSE_HOVER, 2-PRESSED
     bool btnAction = false;
@@ -176,6 +176,7 @@ void Game::Run() {
             {
                 // Check button state
                 DrawRectangle(playButton.x, playButton.y, playButton.width, playButton.height, GREEN);
+                DrawText("Play", /*playButton.width/2 +*/ playButton.x + 50, playButton.height/2 + playButton.y, 100, BLACK);
                 DrawText("CASSE MES BRIQUES", 20, 20, 40, DARKGREEN);
             } break;
             case GAMEPLAY:
@@ -201,6 +202,7 @@ void Game::Run() {
             {
                 // TODO: Update ENDING screen variables here!
                 DrawRectangle(menuButton.x, menuButton.y, menuButton.width, menuButton.height, GREEN);
+                DrawText("Retour menu", /*playButton.width/2 +*/ menuButton.x + 50, menuButton.height/2 + playButton.y, 80, BLACK);
             } break;
             default: break;
         }

@@ -7,6 +7,7 @@
 #include "BrickGrid.h"
 #include "Ball.h"
 #include "raymath.h"
+typedef enum GameScreen { MENU, GAMEPLAY, ENDING } GameScreen;
 
 Game::Game() {
     _camera = {0};
@@ -20,7 +21,7 @@ Game::Game() {
 }
 
 void Game::Init() {
-    InitWindow(1600, 900, "CustomSnake");
+    InitWindow(_screenWidth, _screenHeight, "CustomSnake");
 }
 
 void Game::CheckLoss() {
@@ -35,75 +36,155 @@ void Game::CheckLoss() {
 }
 
 void Game::Run() {
-    Init();
     //Init
-    Racket racket = Racket({0,200}, {100,20},  250, DARKGREEN);
-    _camera.target = {racket.Position.x,racket.Position.y - 200};
+    Init();
+    GameScreen currentScreen = MENU;
+    Racket racket = Racket({0,400}, {100,20},  250, DARKGREEN);
+    _camera.target = {racket.Position.x,racket.Position.y - 400};
 
-    BrickGrid grid = BrickGrid({-700,-350},{1400,400},20,10,2);
+    BrickGrid grid = BrickGrid({-700,-350},{1400,400},20,10,2,3);
 
-    Ball _ball = Ball({0, 0}, {0.0f, 1.0f}, 250);
+    Ball _ball /*= Ball({0, 0}, {0.0f, 1.0f}, 250)*/;
 
     Rectangle topWall = {-790, -450, 1600, 10};
     Rectangle leftWall = {-800, -450, 10, 900};
     Rectangle rightWall = {790, -450, 10, 900};
 
+    Rectangle playButton = { _screenWidth/2.0f-200,_screenHeight/2.0f-200, 400, 300};
+    Rectangle menuButton = { _screenWidth/2.0f-200,_screenHeight/2.0f-200, 400, 300};
+
+    int btnState = 0;               // Button state: 0-NORMAL, 1-MOUSE_HOVER, 2-PRESSED
+    bool btnAction = false;
+    Vector2 mousePoint = { 0.0f, 0.0f };
+
+
     while (!WindowShouldClose()) {
         ClearBackground(RAYWHITE);
 
-        // Update
-        racket.Mouvements();
-        _ball.update(GetFrameTime());
-        Vector2 ballPos = _ball.getPosition();
-        Rectangle ballRect = {ballPos.x - 10, ballPos.y - 10, 20, 20};
-        Rectangle racketRect = {racket.Position.x, racket.Position.y, 100, 20};
+        switch (currentScreen)
+        {
+            case MENU:
+            {
+                ClearBackground(GRAY);
+                mousePoint = GetMousePosition();
+                btnAction = false;
 
-        if (CheckCollisionRecs(ballRect, racketRect)) {
-            float sectionWidth = racketRect.width / 3.0f;
-            float leftSectionEnd = racketRect.x + sectionWidth;
-            float middleSectionEnd = racketRect.x + 2 * sectionWidth;
+                // Check button state
+                if (CheckCollisionPointRec(mousePoint, playButton))
+                {
+                    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) btnState = 2;
+                    else btnState = 1;
 
-            if (ballPos.x < leftSectionEnd) {
-                _ball.setDirection(Vector2Normalize({-0.7f, -1.0f}));
-            }
-            else if (ballPos.x < middleSectionEnd) {
-                _ball.setDirection(Vector2Normalize({0.0f, -1.0f}));
-            }
-            else {
-                _ball.setDirection(Vector2Normalize({0.7f, -1.0f}));
-            }
-        }
+                    if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) btnAction = true;
+                }
+                else btnState = 0;
 
-        if (CheckCollisionRecs(ballRect, topWall)) {
-            Vector2 collisionNormal = {0.0f, 1.0f};
-            _ball.impact(collisionNormal);
-        }
-        else if (CheckCollisionRecs(ballRect, leftWall)) {
-            Vector2 collisionNormal = {1.0f, 0.0f};
-            _ball.impact(collisionNormal);
-        }
-        else if (CheckCollisionRecs(ballRect, rightWall)) {
-            Vector2 collisionNormal = {-1.0f, 0.0f};
-            _ball.impact(collisionNormal);
-        }
+                if (btnAction)
+                {
+                    PlayerLife = 3;
+                    _ball = Ball({0, 0}, {0.0f, 1.0f}, 250);
+                    currentScreen = GAMEPLAY;
+                }
 
-        for (int i = 0; i < 20; i++) {
-            for (int j = 0; j < 10; j++) {
-                if (!grid.Grid[i][j].IsDead && CheckCollisionRecs(ballRect, grid.Grid[i][j].RectCollision)) {
+            } break;
+            case GAMEPLAY:
+            {
+                // TODO: Update GAMEPLAY screen variables here!
+                // Update
+                racket.Mouvements();
+                _ball.update(GetFrameTime());
+                Vector2 ballPos = _ball.getPosition();
+                Rectangle ballRect = {ballPos.x - 10, ballPos.y - 10, 20, 20};
+                Rectangle racketRect = {racket.Position.x, racket.Position.y, 100, 20};
+
+                if (CheckCollisionRecs(ballRect, racketRect)) {
+                    float sectionWidth = racketRect.width / 3.0f;
+                    float leftSectionEnd = racketRect.x + sectionWidth;
+                    float middleSectionEnd = racketRect.x + 2 * sectionWidth;
+
+                    if (ballPos.x < leftSectionEnd) {
+                        _ball.setDirection(Vector2Normalize({-0.7f, -1.0f}));
+                    }
+                    else if (ballPos.x < middleSectionEnd) {
+                        _ball.setDirection(Vector2Normalize({0.0f, -1.0f}));
+                    }
+                    else {
+                        _ball.setDirection(Vector2Normalize({0.7f, -1.0f}));
+                    }
+                }
+                if (CheckCollisionRecs(ballRect, topWall)) {
                     Vector2 collisionNormal = {0.0f, 1.0f};
                     _ball.impact(collisionNormal);
-                    grid.Grid[i][j].GetDamage(1);
                 }
-            }
-        }
+                else if (CheckCollisionRecs(ballRect, leftWall)) {
+                    Vector2 collisionNormal = {1.0f, 0.0f};
+                    _ball.impact(collisionNormal);
+                }
+                else if (CheckCollisionRecs(ballRect, rightWall)) {
+                    Vector2 collisionNormal = {-1.0f, 0.0f};
+                    _ball.impact(collisionNormal);
+                }
 
-        if (ballPos.y > 650 && !_ballOut) {
-            CheckLoss();
+                for (int i = 0; i < 20; i++) {
+                    for (int j = 0; j < 10; j++) {
+                        if (!grid.Grid[i][j].IsDead && CheckCollisionRecs(ballRect, grid.Grid[i][j].RectCollision)) {
+                            Vector2 collisionNormal = {0.0f, 1.0f};
+                            _ball.impact(collisionNormal);
+                            grid.Grid[i][j].GetDamage(1);
+                        }
+                    }
+                }
+
+                if (ballPos.y > 650 && !_ballOut) {
+                    CheckLoss();
+
+                }
+                if (PlayerLife <= 0) {
+                    currentScreen = ENDING;
+                }
+            } break;
+            case ENDING:
+            {
+                // TODO: Update ENDING screen variables here!
+                mousePoint = GetMousePosition();
+                btnAction = false;
+
+                // Check button state
+                if (CheckCollisionPointRec(mousePoint, menuButton))
+                {
+                    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) btnState = 2;
+                    else btnState = 1;
+
+                    if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) btnAction = true;
+                }
+                else btnState = 0;
+
+                if (btnAction)
+                {
+                    grid.ResetGrid();
+                    currentScreen = MENU;
+                }
+            } break;
+            default: break;
+
         }
 
         // Render
         BeginDrawing();
-            BeginMode2D(_camera);
+        switch (currentScreen) {
+            case MENU:
+            {
+                // Check button state
+                DrawRectangle(playButton.x, playButton.y, playButton.width, playButton.height, GREEN);
+                DrawText("CASSE MES BRIQUES", 20, 20, 40, DARKGREEN);
+            } break;
+            case GAMEPLAY:
+            {
+                if (PlayerLife <= 0) {
+                    DrawRectangle(menuButton.x, menuButton.y, menuButton.width, menuButton.height, GREEN);
+                }
+                // TODO: Update GAMEPLAY screen variables here!
+                BeginMode2D(_camera);
                 DrawRectangleRec(topWall, BLACK);
                 DrawRectangleRec(leftWall, BLACK);
                 DrawRectangleRec(rightWall, BLACK);
@@ -114,7 +195,15 @@ void Game::Run() {
                 if (PlayerLife <= 0) {
                     DrawText("Defeat", -700, 300, 40, BLACK);
                 }
-            EndMode2D();
+                EndMode2D();
+            } break;
+            case ENDING:
+            {
+                // TODO: Update ENDING screen variables here!
+                DrawRectangle(menuButton.x, menuButton.y, menuButton.width, menuButton.height, GREEN);
+            } break;
+            default: break;
+        }
         EndDrawing();
     }
     CloseWindow();

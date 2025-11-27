@@ -19,6 +19,9 @@ public:
 
 private:
     void Init();
+
+    const int _screenWidth = 1600;
+    const int _screenHeight = 900;
     Camera2D _camera = {0};
     int _score = 0;
     Ball _ball;

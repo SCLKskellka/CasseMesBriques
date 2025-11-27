@@ -7,12 +7,13 @@
 #include "Brick.h"
 #include "BrickGrid.h"
 
-BrickGrid::BrickGrid(Vector2 gridPosition, Vector2 gridSize, int rowBrickQtt, int colBrickQtt, int padding) {
+BrickGrid::BrickGrid(Vector2 gridPosition, Vector2 gridSize, int rowBrickQtt, int colBrickQtt, int padding, int bricksHP) {
     _gridPosition = gridPosition;
     _gridSize = gridSize;
     _rowBrickQtt = rowBrickQtt;
     _colBrickQtt = colBrickQtt;
     _padding = padding;
+    _bricksHP = bricksHP;
 
     Vector2 brickSize = BrickSizeCalculation();
     for (int i = 0; i < _rowBrickQtt; i++) {
@@ -52,4 +53,13 @@ void BrickGrid::Display() {
     }
 }
 
+void BrickGrid::ResetGrid() {
+    for (int i = 0; i < Grid.size(); i++) {
+        for (int j = 0; j < Grid[i].size(); j++) {
+            Grid[i][j].HP = _bricksHP;
+            Grid[i][j].MyColor = RED;
+            Grid[i][j].IsDead = false;
+        }
+    }
+}
 

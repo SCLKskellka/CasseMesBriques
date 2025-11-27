@@ -22,5 +22,6 @@ private:
     Camera2D _camera = {0};
     int _score = 0;
     Ball _ball;
+    bool _ballOut = false;
 
 };

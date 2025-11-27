@@ -1,8 +1,7 @@
 ﻿#include <iostream>
-#include<raylib.h>
+#include <raylib.h>
 #include <vector>
 #include "Game.h"
-
 #include "Brick.h"
 #include "Racket.h"
 #include "BrickGrid.h"
@@ -12,44 +11,34 @@
 Game::Game() {
     _camera = {0};
     _camera.target = (Vector2){0, 0};
-    _camera.offset = (Vector2){1600 / 2.0f, 900 / 2.0f}; // choix de la position d'origine
+    _camera.offset = (Vector2){1600 / 2.0f, 900 / 2.0f};
     _camera.rotation = 0;
     _camera.zoom = 1;
     _score = 0;
-
-
+    PlayerLife = 3;
+    _ball = Ball({0, 0}, {0.0f, 1.0f}, 250);
 }
 
 void Game::Init() {
-    /**
-     *Ouverture de la fenêtre de jeu
-     **/
-    InitWindow(1600,900,"CustomSnake");
-    PlayerLife = 3;
-
+    InitWindow(1600, 900, "CustomSnake");
 }
 
 void Game::CheckLoss() {
-
-    PlayerLife -= 1;
-    if (PlayerLife > 0) {
-        _ball = Ball({0, 0}, {0.0f, 1.0f}, 250);
-    }
-    else {
-        DrawText(TextFormat("Defeat"), 100, 800, 40, BLACK);
+    if (!_ballOut) {
+        PlayerLife -= 1;
+        _ballOut = true;
+        if (PlayerLife > 0) {
+            _ball = Ball({0, 0}, {0.0f, 1.0f}, 250);
+            _ballOut = false;
+        }
     }
 }
 
-
 void Game::Run() {
     Init();
-    //Init
-    Racket racket = Racket({0,200}, {100,20},  250, DARKGREEN);
-    _camera.target = {racket.Position.x,racket.Position.y - 200};
-
-    BrickGrid grid = BrickGrid({-700,-350},{1400,400},10,5,1);
-
-    Ball _ball = Ball({0, 0}, {0.0f, 1.0f}, 250);
+    Racket racket = Racket({0, 200}, {100, 20}, 250, DARKGREEN);
+    _camera.target = {racket.Position.x, racket.Position.y - 200};
+    BrickGrid grid = BrickGrid({-700, -350}, {1400, 400}, 10, 5, 1);
 
     Rectangle topWall = {-790, -450, 1600, 10};
     Rectangle leftWall = {-800, -450, 10, 900};
@@ -104,7 +93,7 @@ void Game::Run() {
             }
         }
 
-        if (ballPos.y > 650) {
+        if (ballPos.y > 650 && !_ballOut) {
             CheckLoss();
         }
 
@@ -116,9 +105,11 @@ void Game::Run() {
                 DrawRectangleRec(rightWall, BLACK);
                 racket.Display();
                 grid.Display();
-
                 DrawCircleV(_ball.getPosition(), 10, RED);
-
+                DrawText(TextFormat("Lives: %d", PlayerLife), -700, 400, 20, BLACK);
+                if (PlayerLife <= 0) {
+                    DrawText("Defeat", 0, 0, 40, BLACK);
+                }
             EndMode2D();
         EndDrawing();
     }

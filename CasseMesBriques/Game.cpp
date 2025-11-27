@@ -47,7 +47,7 @@ void Game::Run() {
     Racket racket = Racket({0,200}, {100,20},  250, DARKGREEN);
     _camera.target = {racket.Position.x,racket.Position.y - 200};
 
-    BrickGrid grid = BrickGrid({-700,-350},{1400,400},10,5,1);
+    BrickGrid grid = BrickGrid({-700,-350},{1400,400},20,10,2);
 
     Ball _ball = Ball({0, 0}, {0.0f, 1.0f}, 250);
 
@@ -94,9 +94,9 @@ void Game::Run() {
             _ball.impact(collisionNormal);
         }
 
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 5; j++) {
-                if (CheckCollisionRecs(ballRect, grid.Grid[i][j].RectCollision)) {
+        for (int i = 0; i < 20; i++) {
+            for (int j = 0; j < 10; j++) {
+                if (!grid.Grid[i][j].IsDead && CheckCollisionRecs(ballRect, grid.Grid[i][j].RectCollision)) {
                     Vector2 collisionNormal = {0.0f, 1.0f};
                     _ball.impact(collisionNormal);
                     grid.Grid[i][j].GetDamage(1);

@@ -108,7 +108,7 @@ void Game::Run() {
                 DrawCircleV(_ball.getPosition(), 10, RED);
                 DrawText(TextFormat("Lives: %d", PlayerLife), -700, 400, 20, BLACK);
                 if (PlayerLife <= 0) {
-                    DrawText("Defeat", 0, 0, 40, BLACK);
+                    DrawText("Defeat", -700, 300, 40, BLACK);
                 }
             EndMode2D();
         EndDrawing();

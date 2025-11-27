@@ -10,12 +10,12 @@ Brick::Brick(Vector2 position, Vector2 size, Color color, int hp) {
     MyColor = color;
     HP = hp;
     _maxHP = hp;
-    _isDead = false;
+    IsDead = false;
     GenerateCollisionRect();
 }
 
 void Brick::Display() {
-    if (!_isDead) {
+    if (!IsDead) {
         DrawRectangle(Position.x, Position.y,Size.x,Size.y,MyColor);
     }
 }
@@ -29,7 +29,7 @@ void Brick::GetDamage(int damage) {
         MyColor = YELLOW;
     if (HP <=0) {
         HP = 0;
-        _isDead = true;
+        IsDead = true;
     }
 }
 void Brick::GenerateCollisionRect() {

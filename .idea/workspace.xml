@@ -33,9 +33,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5d4acb5c-4335-442e-82a4-9aa840569be5" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CasseMesBriques/Game.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/CasseMesBriques/Game.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CasseMesBriques/Game.h" beforeDir="false" afterPath="$PROJECT_DIR$/CasseMesBriques/Game.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,7 +71,7 @@
     "RunOnceActivity.west.config.association.type.startup.service": "true",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "Elias",
     "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "D:/Users/Elias/Annee4/Programmation/CasseMesBriques",
     "node.js.detected.package.eslint": "true",
@@ -129,6 +127,7 @@
       <workItem from="1764084262365" duration="2137000" />
       <workItem from="1764145917662" duration="1665000" />
       <workItem from="1764236917180" duration="1873000" />
+      <workItem from="1764587826167" duration="201000" />
     </task>
     <servers />
   </component>

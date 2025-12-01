@@ -50,6 +50,10 @@ void Game::Run() {
     Rectangle leftWall = {-800, -450, 10, 900};
     Rectangle rightWall = {790, -450, 10, 900};
 
+    float shakeDuration = 0.5f;
+    float shakeStrength = 5.0f;
+    float shakeTimer = 0.0f;
+    Vector2 originalCameraTarget = _camera.target;
     Rectangle playButton = { _screenWidth/2.0f-200,_screenHeight/2.0f-200, 400, 300};
     Rectangle menuButton = { _screenWidth/2.0f-200,_screenHeight/2.0f-200, 600, 300};
 
@@ -75,6 +79,18 @@ void Game::Run() {
                     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) btnState = 2;
                     else btnState = 1;
 
+            if (ballPos.x < leftSectionEnd) {
+                _ball.setDirection(Vector2Normalize({-0.7f, -1.0f}));
+            }
+            else if (ballPos.x < middleSectionEnd) {
+                _ball.setDirection(Vector2Normalize({0.0f, -1.0f}));
+            }
+            else {
+                _ball.setDirection(Vector2Normalize({0.7f, -1.0f}));
+            }
+
+            //PlaySound(fxRacketOne);
+        }
                     if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) btnAction = true;
                 }
                 else btnState = 0;
@@ -167,6 +183,19 @@ void Game::Run() {
             } break;
             default: break;
 
+        if (shakeTimer > 0.0f) {
+            shakeTimer -= GetFrameTime();
+            float shakeOffsetX = (rand() % 100 - 50) / 100.0f * shakeStrength;
+            float shakeOffsetY = (rand() % 100 - 50) / 100.0f * shakeStrength;
+            _camera.target.x = originalCameraTarget.x + shakeOffsetX;
+            _camera.target.y = originalCameraTarget.y + shakeOffsetY;
+        } else {
+            _camera.target = originalCameraTarget;
+        }
+
+        if (ballPos.y > 650 && !_ballOut) {
+            CheckLoss();
+            shakeTimer = shakeDuration;
         }
 
         // Render
@@ -209,4 +238,7 @@ void Game::Run() {
         EndDrawing();
     }
     CloseWindow();
+
+    /*UnloadSound(fxRacketOne);
+    UnloadSound(fxRacketTwo);*/
 }

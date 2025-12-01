@@ -17,6 +17,9 @@ public:
     void IncreaseScore(int value);
     void CheckLoss();
 
+    Sound fxRacketOne;
+    Sound fxRacketTwo;
+
 private:
     void Init();
 
